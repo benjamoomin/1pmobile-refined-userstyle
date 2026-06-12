@@ -14,7 +14,7 @@ Choose the extension for your browser:
 ### 2. Install the UserStyle
 Once your manager is installed, click the button below to add the theme:
 
-[![Install directly with Stylus](https://shields.io)](https://github.com/benjamoomin/1pmobile-refined-userstyle/raw/refs/heads/main/1pmobile-refined.user.css)
+[![Install directly with Stylus](https://img.shields.io/badge/Install%20with-Stylus-00b48f?style=flat&logo=stylus&logoColor=white)](https://github.com/benjamoomin/1pmobile-refined-userstyle/raw/refs/heads/main/1pmobile-refined.user.css)
 
 ## 🛠 Features
 - **Modern UI:** Updated fonts, spacing, and colours.
@@ -24,7 +24,7 @@ Once your manager is installed, click the button below to add the theme:
 ## ☕ Support
 If you find this style useful and want to support its development:
 
-[![Donate with PayPal](https://shields.io)](https://paypal.me/benjamoomin)
+[![Donate with PayPal](https://img.shields.io/badge/Donate%20with-PayPal-00457C?style=flat&logo=paypal&logoColor=white)](https://paypal.me/benjamoomin)
 
 ## 📄 License
 This project is licensed under the [MIT License](LICENSE).
