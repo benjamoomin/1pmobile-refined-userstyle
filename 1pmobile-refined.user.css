@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           1pmobile refined
 @namespace      github.com/benjamoomin/1pmobile-refined-userstyle
-@version        1.8.5
+@version        1.8.6
 @description    Full modernisation project of 1pmobile.com - focusing on modernisation, cleaner styling and ensuring optimisation for mobile devices
 @author         benjamoomin
 @homepageURL    https://github.com/benjamoomin/1pmobile-refined-userstyle
@@ -9,6 +9,13 @@
 @updateURL      https://github.com/benjamoomin/1pmobile-refined-userstyle/raw/refs/heads/main/1pmobile-refined.user.css
 @license        MIT
 @preprocessor   default
+
+@var select theme-preset "Choose a Color Theme" {
+  "1p Green*": "115, 182, 42",
+  "Ocean Blue":     "33, 150, 243",
+  "Ruby Red":       "220, 53, 69",
+  "Sunset Orange":  "253, 126, 20"
+}
 ==/UserStyle== */
 
 @-moz-document domain("1pmobile.com") {
@@ -16,7 +23,7 @@
 	
 	:root {
 		/*Primary green colour used throughout the site, defined as a variable to make it easier to change in the future if needed*/
-		--primary-green-rgb: 115, 182, 42;
+		--primary-green-rgb: var(--theme-preset);
 	}
 
 	/*Dev message to the end of the footer*/
