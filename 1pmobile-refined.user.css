@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           1pmobile refined
 @namespace      github.com/benjamoomin/1pmobile-refined-userstyle
-@version        1.8.4
+@version        1.8.5
 @description    Full modernisation project of 1pmobile.com - focusing on modernisation, cleaner styling and ensuring optimisation for mobile devices
 @author         benjamoomin
 @homepageURL    https://github.com/benjamoomin/1pmobile-refined-userstyle
@@ -14,6 +14,11 @@
 @-moz-document domain("1pmobile.com") {
 	/*SITEWIDE ALTERATIONS*/
 	
+	:root {
+		/*Primary green colour used throughout the site, defined as a variable to make it easier to change in the future if needed*/
+		--primary-green-rgb: 115, 182, 42;
+	}
+
 	/*Dev message to the end of the footer*/
 	footer.footer div.container-fluid:after , #wrapper:has(form[action="/log-in"]):after{
 		content: "Enjoying this look? Buy me a coffee: paypal.me/benjamoomin";
@@ -32,7 +37,7 @@
 
 	/*Main background slight off white based on the standard green from the branding*/
 	body {
-		background-color: #73b62a21;
+		background-color: rgba(var(--primary-green-rgb), .13);
 	}
 
 	/*Replacing all the overly heavy rounding throughout the site, with something much more subtle*/
@@ -57,10 +62,11 @@
 	/*Replacing the gradient backgrounds with a clean flat colour*/
 	.navbar-default,
 	.footer {
-		background: #53960a;
+		background-color: rgb(var(--primary-green-rgb));
+		background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.14));
 	}
 	.green {
-		background: #73b62a;
+		background: rgb(var(--primary-green-rgb));
 	}
 
 
@@ -129,7 +135,7 @@
 
 	/*Tidy up dashboard panels due to removing images above*/
 	div.linkbox {
-		background-color: #73b62a;
+		background-color: rgb(var(--primary-green-rgb));
 		padding-top: 6px;
 		padding-bottom: 4px;
 	}
@@ -141,9 +147,6 @@
 
 	/*Make the 3 buttons (Names/Numbers/Both) show as simple links*/
 	a[href^="/myaccount?shownameonly"] button {
-		/*background-color: #FFFFFF;
-		border-color: #73b62a;
-		color: #404040;*/
 		padding: 2px 2px 1px 2px;
 		margin: unset;
 		color: unset;
@@ -185,16 +188,12 @@
 	a[href^="/myaccount?nc"] button.green {
 		color: #404040;
 		background-color: #ffffff;
-		border-color: #73b62a;
+		border-color: rgb(var(--primary-green-rgb));
 	}
 
 	/*Alter the inactive account buttons background and border*/
 	a[href^="/myaccount?nc"] button.fontblack {
-		/*background: #73b62a;
-		opacity: 0.65;
-		border-color: #73b62a;
-		color: #FFFFFF*/
-		background: #73b62a;
+		background: rgb(var(--primary-green-rgb));
 		color: #ffffff;
 	}
 
@@ -373,7 +372,7 @@
 		background: #FFFFFF;
 		color: #1e1e1e9e;
 		padding: 2px 8px;
-		border-color: #73b62a;
+		border-color: rgb(var(--primary-green-rgb));
 		margin-bottom: 2px;
 	}
 
@@ -471,7 +470,7 @@
 	div[role="group"] a.btn[href="/usage?_action=M"] {
 		color: #404040;
 		background-color: #ffffff;
-		border-color: #73b62a;
+		border-color: rgb(var(--primary-green-rgb));
 	}
 	div[role="group"] a.btn[href="/usage?_action=M"]::after {
 		content: " \2611" !important;
@@ -495,10 +494,10 @@
 	div.table-responsive th,
 	div.table-responsive td {
 		display: block;
-		border: 1px solid #73b62a21 !important;
+		border: 1px solid rgba(var(--primary-green-rgb), .13) !important;
 	}
 	div.table-responsive {
-		border: 1px solid #73b62a21 !important;
+		border: 1px solid rgba(var(--primary-green-rgb), .13) !important;
 		border-radius: unset;
 	}
 }
@@ -677,11 +676,11 @@
 	/*On the usage page only try to restyle the active boost details to align more with the boosts page*/
 	div.col-sm-12.mb0 > p {
 		background: rgba(255, 255, 255, 0.75);
-		outline: 3px solid #73b62a;
+		outline: 3px solid rgb(var(--primary-green-rgb));
 		border-radius: 5px;
 		padding: 1px 5px 5px 5px;
 		text-align: center;
-		color: #73b62a;
+		color: rgb(var(--primary-green-rgb));
 		font-size: 85%;
 	}
 	@media (min-width: 992px) {
@@ -769,13 +768,13 @@
 	}
 	.activeboost.con:has( > h2:hover) > p {
 		font-size: 16px !important;
-		color: #73b62a !important;
+		color: rgb(var(--primary-green-rgb)) !important;
 		/*transition for when the text is to be shown*/
 		transition: font-size 0.5s ease-in-out, color 0.2s ease 0.5s;
 	}
 	div.col-sm-12.mb0 > p:hover {
 		font-size: 85% !important;
-		color: #73b62a !important;
+		color: rgb(var(--primary-green-rgb)) !important;
 		/*transition for when the text is to be shown*/
 		transition: font-size 0.5s ease-in-out, color 0.2s ease 0.5s;
 	}
@@ -862,7 +861,7 @@
 			width: 240px !important;
 			height: 120px !important;
 			border-radius: 120px 120px 0 0 !important;
-			background: #73b62a26 !important;
+			background: rgba(var(--primary-green-rgb), .15) !important;
 			z-index: 1 !important;
 		}
 
@@ -875,7 +874,7 @@
 			left: 0 !important;
 			height: 100% !important;
 			border-radius: 120px 120px 0 0 !important;
-			background-color: #73b62a !important;
+			background-color: rgb(var(--primary-green-rgb)) !important;
 			z-index: 2 !important;
 			width: 100% !important;
 			transform-origin: center bottom !important;
@@ -1448,7 +1447,7 @@
 			font-family: 'Roboto', sans-serif !important;
 			font-size: 28px !important;
 			font-weight: bold !important;
-			color: #73b62a !important;
+			color: rgb(var(--primary-green-rgb)) !important;
 			background: #ffffff !important;
 
 			display: inline-flex !important;
