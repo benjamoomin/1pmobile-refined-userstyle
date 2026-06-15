@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           1pmobile refined
 @namespace      github.com/benjamoomin/1pmobile-refined-userstyle
-@version        2.0.0
+@version        2.0.
 @description    Full modernisation project of 1pmobile.com - focusing on modernisation, cleaner styling and ensuring optimisation for mobile devices
 @author         benjamoomin
 @homepageURL    https://github.com/benjamoomin/1pmobile-refined-userstyle
@@ -12,12 +12,12 @@
 
 @var select theme-preset "Choose a Color Theme" {
   "1p Green*":              "1;--primary-rgb: 115, 182, 42; --bg-rgb: 247, 251, 245; --text-rgb: 20, 20, 20",
-  "Mint Green (beta)":      "2;--primary-rgb: 57, 181, 128; --bg-rgb: 229, 245, 239; --text-rgb: 20, 20, 20",
-  "Cyan Sea (beta)":        "3;--primary-rgb: 26, 179, 189; --bg-rgb: 225, 245, 246; --text-rgb: 20, 20, 20",
-  "Matt Blue (beta)":       "4;--primary-rgb: 42, 109, 189; --bg-rgb: 227, 236, 246; --text-rgb: 20, 20, 20",
-  "Pastel Red (beta)":      "5;--primary-rgb: 243, 83, 83;  --bg-rgb: 255, 242, 242; --text-rgb: 20, 20, 20",
-  "Orange Burst (beta)":    "6;--primary-rgb: 247, 118, 30; --bg-rgb: 255, 237, 226; --text-rgb: 20, 20, 20",
-  "Amethyst Purple (beta)": "7;--primary-rgb: 133, 78, 187; --bg-rgb: 239, 232, 246; --text-rgb: 20, 20, 20",
+  "Mint Green":      		"2;--primary-rgb: 57, 181, 128; --bg-rgb: 229, 245, 239; --text-rgb: 20, 20, 20",
+  "Cyan Sea":        		"3;--primary-rgb: 26, 179, 189; --bg-rgb: 225, 245, 246; --text-rgb: 20, 20, 20",
+  "Matt Blue":       		"4;--primary-rgb: 42, 109, 189; --bg-rgb: 227, 236, 246; --text-rgb: 20, 20, 20",
+  "Pastel Red":      		"5;--primary-rgb: 243, 83, 83;  --bg-rgb: 255, 242, 242; --text-rgb: 20, 20, 20",
+  "Orange Burst":    		"6;--primary-rgb: 247, 118, 30; --bg-rgb: 255, 237, 226; --text-rgb: 20, 20, 20",
+  "Amethyst Purple": 		"7;--primary-rgb: 133, 78, 187; --bg-rgb: 239, 232, 246; --text-rgb: 20, 20, 20",
   "DARK Mint Green (beta)":	"8;--primary-rgb: 57, 181, 128; --bg-rgb: 10, 26, 20; --text-rgb: 235, 235, 235"
 }
 ==/UserStyle== */
