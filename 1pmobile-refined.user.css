@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           1pmobile refined
 @namespace      github.com/benjamoomin/1pmobile-refined-userstyle
-@version        2.0.1
+@version        2.1.0
 @description    Full modernisation project of 1pmobile.com - focusing on modernisation, cleaner styling and ensuring optimisation for mobile devices
 @author         benjamoomin
 @homepageURL    https://github.com/benjamoomin/1pmobile-refined-userstyle
@@ -893,730 +893,325 @@
 
 
 	@media (min-width: 350px) {
-		/*For regular/larger mobiles views and above
-	Change the progress bar to a semi circular gauge*/
-		/* ==========================================================================
+		
+/* ==========================================================================
    1. LAYOUT CANVAS & CONTAINER ANCHORING
    ========================================================================== */
-		.col-md-12.mb10 {
-			position: relative !important;
-			padding-top: 2px !important;
-			padding-bottom: 120px !important;
-			margin-bottom: 20px;
-			margin-top: 14px;
-			display: flex !important;
-			flex-direction: column !important;
-			align-items: center !important;
-		}
+.col-md-12.mb10 {
+	position: relative !important;
+	padding-top: 2px !important;
+	padding-bottom: 250px !important; /* padding determines the height */
+	margin-bottom: 2px;
+	margin-top: 2px;
+	display: flex !important;
+	flex-direction: column !important;
+	align-items: center !important;
+}
 
-		/* Collapses the original text box to eliminate empty dead space */
-		.col-md-12.mb10 > p:first-of-type {
-			order: 1 !important;
-			text-align: center !important;
-			width: 100% !important;
-			font-size: 0 !important;
-			line-height: 0 !important;
-			height: 0 !important;
-			margin: 0 !important;
-			padding: 0 !important;
-		}
+/* Collapses the original text box to eliminate empty dead space */
+.col-md-12.mb10 > p:first-of-type {
+	order: 1 !important;
+	text-align: center !important;
+	width: 100% !important;
+	font-size: 0 !important;
+	line-height: 0 !important;
+	height: 0 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
 
-		/* ==========================================================================
-   2. THE RADIAL CONIC GAUGE 
+/* ==========================================================================
+   2. THE RADIAL CONIC GAUGE
    ========================================================================== */
-		.col-md-12.mb10 .progress {
-			order: 2 !important;
-			position: absolute !important;
-			bottom: 0px !important;
-			left: 50% !important;
-			transform: translateX(-50%) !important;
+.col-md-12.mb10 .progress {
+	order: 2 !important;
+	position: absolute !important;
+	bottom: 0px !important;
+	left: 50% !important;
+	transform: translateX(-50%) !important;
 
-			width: 240px !important;
-			height: 120px !important;
-			margin: 0 !important;
-			background: transparent !important;
-			box-shadow: none;
+	width: 240px !important;
+	height: 240px !important;
+	margin: 0 !important;
+	background: transparent !important;
+	box-shadow: none;
 
-			overflow: visible !important;
-			z-index: 1 !important;
+	overflow: visible !important;
+	z-index: 1 !important;
+	/* Initializes the CSS counter at the wrapper level */
+	counter-reset: gauge-val 0;
+}
 
-			/* Initializes the CSS counter at the wrapper level */
-			counter-reset: gauge-val 0;
-		}
+/* The Grey Background Track (True circle shape with a native 270° clip-path gap) */
+.col-md-12.mb10 .progress::before {
+	content: "" !important;
+	position: absolute !important;
+	top: 0 !important;
+	left: 0 !important;
+	width: 240px !important;
+	height: 240px !important;
+	border-radius: 50% !important; /* Uniform full circle */
+	background: rgba(var(--primary-rgb), .15) !important;
+	z-index: 1 !important;
+	
+	/* Visually clips out a sharp 90-degree wedge from the bottom center */
+	clip-path: polygon(50% 50%, 0% 100%, 0% 0%, 100% 0%, 100% 100%) !important;
+}
 
-		/* The Grey Background Track (Semicircle shape enforced via border-radius) */
-		.col-md-12.mb10 .progress::before {
-			content: "" !important;
-			position: absolute !important;
-			top: 0 !important;
-			left: 0 !important;
-			width: 240px !important;
-			height: 120px !important;
-			border-radius: 120px 120px 0 0 !important;
-			background: rgba(var(--primary-rgb), .15) !important;
-			z-index: 1 !important;
-		}
+/* THE THREE-QUARTER CONIC MASK:
+   Sweeps around 270 degrees total. The 101-line matrix maps to a 75% peak value. */
+.col-md-12.mb10 .progress-bar.green {
+	position: absolute !important;
+	top: 0 !important;
+	left: 0 !important;
+	height: 100% !important;
+	width: 100% !important;
+	border-radius: 50% !important; /* Uniform full circle */
+	background-color: rgb(var(--primary-rgb)) !important;
+	z-index: 2 !important;
+	transform-origin: center center !important;
 
-		/* THE CONIC MASK:
-	   Locks the visual container block to 100% size to preserve the semicircle.
-	   The custom variable --gauge-percent maps to a max of 50% (180 degrees). */
-		.col-md-12.mb10 .progress-bar.green {
-			position: absolute !important;
-			top: 0 !important;
-			left: 0 !important;
-			height: 100% !important;
-			border-radius: 120px 120px 0 0 !important;
-			background-color: rgb(var(--primary-rgb)) !important;
-			z-index: 2 !important;
-			width: 100% !important;
-			transform-origin: center bottom !important;
+	mask-image: conic-gradient( from 225deg at 50% 50%,
+	#00000036 0%,
+	#000 var(--gauge-percent, 75%),
+	transparent var(--gauge-percent, 75%),
+	transparent 100%) !important;
+	-webkit-mask-image: conic-gradient( from 225deg at 50% 50%,
+	#00000036 0%,
+	#000 var(--gauge-percent, 75%),
+	transparent var(--gauge-percent, 75%),
+	transparent 100%) !important;
+}
 
-			mask-image: conic-gradient( from 270deg at 50% 100%,
-			#00000036 0%,
-			#000 var(--gauge-percent, 50%),
-			transparent var(--gauge-percent, 50%),
-			transparent 100%) !important;
-			-webkit-mask-image: conic-gradient( from 270deg at 50% 100%,
-			#00000036 0%,
-			#000 var(--gauge-percent, 50%),
-			transparent var(--gauge-percent, 50%),
-			transparent 100%) !important;
-		}
+/* Hide original unused indicator layers */
+.col-md-12.mb10 .progress-bar.black {
+	display: none !important;
+}
 
-		/* Hide original unused indicator layers */
-		.col-md-12.mb10 .progress-bar.black {
-			display: none !important;
-		}
-
-		/* ==========================================================================
-	   3. THE 101-LINE SEMI-CIRCLE TRANSLATION MATRIX (0% to 50% Scaling)
-	   Accommodates environments with or without inline space formatting.
-	   ========================================================================== */
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:0%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 0%"]) {
-			--gauge-percent: 0%;
-			counter-reset: gauge-val 0;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:1%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 1%"]) {
-			--gauge-percent: 0.5%;
-			counter-reset: gauge-val 1;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:2%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 2%"]) {
-			--gauge-percent: 1%;
-			counter-reset: gauge-val 2;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:3%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 3%"]) {
-			--gauge-percent: 1.5%;
-			counter-reset: gauge-val 3;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:4%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 4%"]) {
-			--gauge-percent: 2%;
-			counter-reset: gauge-val 4;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:5%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 5%"]) {
-			--gauge-percent: 2.5%;
-			counter-reset: gauge-val 5;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:6%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 6%"]) {
-			--gauge-percent: 3%;
-			counter-reset: gauge-val 6;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:7%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 7%"]) {
-			--gauge-percent: 3.5%;
-			counter-reset: gauge-val 7;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:8%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 8%"]) {
-			--gauge-percent: 4%;
-			counter-reset: gauge-val 8;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:9%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 9%"]) {
-			--gauge-percent: 4.5%;
-			counter-reset: gauge-val 9;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:10%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 10%"]) {
-			--gauge-percent: 5%;
-			counter-reset: gauge-val 10;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:11%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 11%"]) {
-			--gauge-percent: 5.5%;
-			counter-reset: gauge-val 11;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:12%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 12%"]) {
-			--gauge-percent: 6%;
-			counter-reset: gauge-val 12;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:13%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 13%"]) {
-			--gauge-percent: 6.5%;
-			counter-reset: gauge-val 13;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:14%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 14%"]) {
-			--gauge-percent: 7%;
-			counter-reset: gauge-val 14;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:15%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 15%"]) {
-			--gauge-percent: 7.5%;
-			counter-reset: gauge-val 15;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:16%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 16%"]) {
-			--gauge-percent: 8%;
-			counter-reset: gauge-val 16;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:17%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 17%"]) {
-			--gauge-percent: 8.5%;
-			counter-reset: gauge-val 17;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:18%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 18%"]) {
-			--gauge-percent: 9%;
-			counter-reset: gauge-val 18;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:19%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 19%"]) {
-			--gauge-percent: 9.5%;
-			counter-reset: gauge-val 19;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:20%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 20%"]) {
-			--gauge-percent: 10%;
-			counter-reset: gauge-val 20;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:21%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 21%"]) {
-			--gauge-percent: 10.5%;
-			counter-reset: gauge-val 21;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:22%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 22%"]) {
-			--gauge-percent: 11%;
-			counter-reset: gauge-val 22;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:23%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 23%"]) {
-			--gauge-percent: 11.5%;
-			counter-reset: gauge-val 23;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:24%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 24%"]) {
-			--gauge-percent: 12%;
-			counter-reset: gauge-val 24;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:25%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 25%"]) {
-			--gauge-percent: 12.5%;
-			counter-reset: gauge-val 25;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:26%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 26%"]) {
-			--gauge-percent: 13%;
-			counter-reset: gauge-val 26;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:27%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 27%"]) {
-			--gauge-percent: 13.5%;
-			counter-reset: gauge-val 27;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:28%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 28%"]) {
-			--gauge-percent: 14%;
-			counter-reset: gauge-val 28;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:29%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 29%"]) {
-			--gauge-percent: 14.5%;
-			counter-reset: gauge-val 29;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:30%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 30%"]) {
-			--gauge-percent: 15%;
-			counter-reset: gauge-val 30;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:31%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 31%"]) {
-			--gauge-percent: 15.5%;
-			counter-reset: gauge-val 31;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:32%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 32%"]) {
-			--gauge-percent: 16%;
-			counter-reset: gauge-val 32;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:33%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 33%"]) {
-			--gauge-percent: 16.5%;
-			counter-reset: gauge-val 33;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:34%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 34%"]) {
-			--gauge-percent: 17%;
-			counter-reset: gauge-val 34;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:35%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 35%"]) {
-			--gauge-percent: 17.5%;
-			counter-reset: gauge-val 35;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:36%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 36%"]) {
-			--gauge-percent: 18%;
-			counter-reset: gauge-val 36;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:37%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 37%"]) {
-			--gauge-percent: 18.5%;
-			counter-reset: gauge-val 37;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:38%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 38%"]) {
-			--gauge-percent: 19%;
-			counter-reset: gauge-val 38;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:39%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 39%"]) {
-			--gauge-percent: 19.5%;
-			counter-reset: gauge-val 39;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:40%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 40%"]) {
-			--gauge-percent: 20%;
-			counter-reset: gauge-val 40;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:41%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 41%"]) {
-			--gauge-percent: 21%;
-			counter-reset: gauge-val 41;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:42%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 42%"]) {
-			--gauge-percent: 21%;
-			counter-reset: gauge-val 42;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:43%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 43%"]) {
-			--gauge-percent: 21.5%;
-			counter-reset: gauge-val 43;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:44%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 44%"]) {
-			--gauge-percent: 22%;
-			counter-reset: gauge-val 44;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:45%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 45%"]) {
-			--gauge-percent: 22.5%;
-			counter-reset: gauge-val 45;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:46%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 46%"]) {
-			--gauge-percent: 23%;
-			counter-reset: gauge-val 46;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:47%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 47%"]) {
-			--gauge-percent: 23.5%;
-			counter-reset: gauge-val 47;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:48%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 48%"]) {
-			--gauge-percent: 24%;
-			counter-reset: gauge-val 48;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:49%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 49%"]) {
-			--gauge-percent: 24.5%;
-			counter-reset: gauge-val 49;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:50%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 50%"]) {
-			--gauge-percent: 25%;
-			counter-reset: gauge-val 50;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:51%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 51%"]) {
-			--gauge-percent: 25.5%;
-			counter-reset: gauge-val 51;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:52%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 52%"]) {
-			--gauge-percent: 26%;
-			counter-reset: gauge-val 52;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:53%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 53%"]) {
-			--gauge-percent: 26.5%;
-			counter-reset: gauge-val 53;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:54%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 54%"]) {
-			--gauge-percent: 27%;
-			counter-reset: gauge-val 54;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:55%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 55%"]) {
-			--gauge-percent: 27.5%;
-			counter-reset: gauge-val 55;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:56%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 56%"]) {
-			--gauge-percent: 28%;
-			counter-reset: gauge-val 56;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:57%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 57%"]) {
-			--gauge-percent: 28.5%;
-			counter-reset: gauge-val 57;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:58%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 58%"]) {
-			--gauge-percent: 29%;
-			counter-reset: gauge-val 58;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:59%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 59%"]) {
-			--gauge-percent: 29.5%;
-			counter-reset: gauge-val 59;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:60%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 60%"]) {
-			--gauge-percent: 30%;
-			counter-reset: gauge-val 60;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:61%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 61%"]) {
-			--gauge-percent: 30.5%;
-			counter-reset: gauge-val 61;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:62%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 62%"]) {
-			--gauge-percent: 31%;
-			counter-reset: gauge-val 62;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:63%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 63%"]) {
-			--gauge-percent: 31.5%;
-			counter-reset: gauge-val 63;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:64%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 64%"]) {
-			--gauge-percent: 32%;
-			counter-reset: gauge-val 64;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:65%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 65%"]) {
-			--gauge-percent: 32.5%;
-			counter-reset: gauge-val 65;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:66%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 66%"]) {
-			--gauge-percent: 33%;
-			counter-reset: gauge-val 66;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:67%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 67%"]) {
-			--gauge-percent: 33.5%;
-			counter-reset: gauge-val 67;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:68%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 68%"]) {
-			--gauge-percent: 34%;
-			counter-reset: gauge-val 68;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:69%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 69%"]) {
-			--gauge-percent: 34.5%;
-			counter-reset: gauge-val 69;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:70%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 70%"]) {
-			--gauge-percent: 35%;
-			counter-reset: gauge-val 70;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:71%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 71%"]) {
-			--gauge-percent: 35.5%;
-			counter-reset: gauge-val 71;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:72%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 72%"]) {
-			--gauge-percent: 36%;
-			counter-reset: gauge-val 72;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:73%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 73%"]) {
-			--gauge-percent: 36.5%;
-			counter-reset: gauge-val 73;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:74%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 74%"]) {
-			--gauge-percent: 37%;
-			counter-reset: gauge-val 74;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:75%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 75%"]) {
-			--gauge-percent: 37.5%;
-			counter-reset: gauge-val 75;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:76%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 76%"]) {
-			--gauge-percent: 38%;
-			counter-reset: gauge-val 76;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:77%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 77%"]) {
-			--gauge-percent: 38.5%;
-			counter-reset: gauge-val 77;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:78%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 78%"]) {
-			--gauge-percent: 39%;
-			counter-reset: gauge-val 78;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:79%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 79%"]) {
-			--gauge-percent: 39.5%;
-			counter-reset: gauge-val 79;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:80%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 80%"]) {
-			--gauge-percent: 40%;
-			counter-reset: gauge-val 80;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:81%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 81%"]) {
-			--gauge-percent: 40.5%;
-			counter-reset: gauge-val 81;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:82%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 82%"]) {
-			--gauge-percent: 41%;
-			counter-reset: gauge-val 82;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:83%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 83%"]) {
-			--gauge-percent: 41.5%;
-			counter-reset: gauge-val 83;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:84%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 84%"]) {
-			--gauge-percent: 42%;
-			counter-reset: gauge-val 84;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:85%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 85%"]) {
-			--gauge-percent: 42.5%;
-			counter-reset: gauge-val 85;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:86%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 86%"]) {
-			--gauge-percent: 43%;
-			counter-reset: gauge-val 86;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:87%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 87%"]) {
-			--gauge-percent: 43.5%;
-			counter-reset: gauge-val 87;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:88%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 88%"]) {
-			--gauge-percent: 44%;
-			counter-reset: gauge-val 88;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:89%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 89%"]) {
-			--gauge-percent: 44.5%;
-			counter-reset: gauge-val 89;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:90%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 90%"]) {
-			--gauge-percent: 45%;
-			counter-reset: gauge-val 90;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:91%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 91%"]) {
-			--gauge-percent: 45.5%;
-			counter-reset: gauge-val 91;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:92%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 92%"]) {
-			--gauge-percent: 46%;
-			counter-reset: gauge-val 92;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:93%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 93%"]) {
-			--gauge-percent: 46.5%;
-			counter-reset: gauge-val 93;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:94%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 94%"]) {
-			--gauge-percent: 47%;
-			counter-reset: gauge-val 94;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:95%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 95%"]) {
-			--gauge-percent: 47.5%;
-			counter-reset: gauge-val 95;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:96%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 96%"]) {
-			--gauge-percent: 48%;
-			counter-reset: gauge-val 96;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:97%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 97%"]) {
-			--gauge-percent: 48.5%;
-			counter-reset: gauge-val 97;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:98%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 98%"]) {
-			--gauge-percent: 49%;
-			counter-reset: gauge-val 98;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:99%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 99%"]) {
-			--gauge-percent: 49.5%;
-			counter-reset: gauge-val 99;
-		}
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:100%"]),
-		.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 100%"]) {
-			--gauge-percent: 50%;
-			counter-reset: gauge-val 100;
-		}
-
-		/* ==========================================================================
-   4. THE CENTER CUTOUT MASK (Inner Semicircle Generator)
+/* ==========================================================================
+   3. THE 101-LINE SEMI-CIRCLE TRANSLATION MATRIX (0% to 75% Scaling Map)
+   Multiplies inline values against a 0.75 scalar coefficient.
    ========================================================================== */
-		.col-md-12.mb10 .progress::after {
-			/* Reads the wrapper counter value perfectly & appends the string text label */
-			content: counter(gauge-val) "% remaining" !important;
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:0%"]),   .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 0%"])   { --gauge-percent: 0%;      counter-reset: gauge-val 0; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:1%"]),   .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 1%"])   { --gauge-percent: 0.75%;   counter-reset: gauge-val 1; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:2%"]),   .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 2%"])   { --gauge-percent: 1.5%;    counter-reset: gauge-val 2; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:3%"]),   .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 3%"])   { --gauge-percent: 2.25%;   counter-reset: gauge-val 3; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:4%"]),   .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 4%"])   { --gauge-percent: 3%;      counter-reset: gauge-val 4; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:5%"]),   .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 5%"])   { --gauge-percent: 3.75%;   counter-reset: gauge-val 5; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:6%"]),   .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 6%"])   { --gauge-percent: 4.5%;    counter-reset: gauge-val 6; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:7%"]),   .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 7%"])   { --gauge-percent: 5.25%;   counter-reset: gauge-val 7; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:8%"]),   .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 8%"])   { --gauge-percent: 6%;      counter-reset: gauge-val 8; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:9%"]),   .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 9%"])   { --gauge-percent: 6.75%;   counter-reset: gauge-val 9; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:10%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 10%"])  { --gauge-percent: 7.5%;    counter-reset: gauge-val 10; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:11%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 11%"])  { --gauge-percent: 8.25%;   counter-reset: gauge-val 11; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:12%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 12%"])  { --gauge-percent: 9%;      counter-reset: gauge-val 12; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:13%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 13%"])  { --gauge-percent: 9.75%;   counter-reset: gauge-val 13; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:14%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 14%"])  { --gauge-percent: 10.5%;   counter-reset: gauge-val 14; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:15%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 15%"])  { --gauge-percent: 11.25%;  counter-reset: gauge-val 15; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:16%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 16%"])  { --gauge-percent: 12%;     counter-reset: gauge-val 16; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:17%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 17%"])  { --gauge-percent: 12.75%;  counter-reset: gauge-val 17; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:18%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 18%"])  { --gauge-percent: 13.5%;   counter-reset: gauge-val 18; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:19%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 19%"])  { --gauge-percent: 14.25%;  counter-reset: gauge-val 19; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:20%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 20%"])  { --gauge-percent: 15%;     counter-reset: gauge-val 20; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:21%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 21%"])  { --gauge-percent: 15.75%;  counter-reset: gauge-val 21; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:22%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 22%"])  { --gauge-percent: 16.5%;   counter-reset: gauge-val 22; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:23%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 23%"])  { --gauge-percent: 17.25%;  counter-reset: gauge-val 23; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:24%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 24%"])  { --gauge-percent: 18%;     counter-reset: gauge-val 24; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:25%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 25%"])  { --gauge-percent: 18.75%;  counter-reset: gauge-val 25; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:26%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 26%"])  { --gauge-percent: 19.5%;   counter-reset: gauge-val 26; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:27%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 27%"])  { --gauge-percent: 20.25%;  counter-reset: gauge-val 27; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:28%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 28%"])  { --gauge-percent: 21%;     counter-reset: gauge-val 28; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:29%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 29%"])  { --gauge-percent: 21.75%;  counter-reset: gauge-val 29; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:30%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 30%"])  { --gauge-percent: 22.5%;   counter-reset: gauge-val 30; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:31%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 31%"])  { --gauge-percent: 23.25%;  counter-reset: gauge-val 31; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:32%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 32%"])  { --gauge-percent: 24%;     counter-reset: gauge-val 32; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:33%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 33%"])  { --gauge-percent: 24.75%;  counter-reset: gauge-val 33; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:34%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 34%"])  { --gauge-percent: 25.5%;   counter-reset: gauge-val 34; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:35%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 35%"])  { --gauge-percent: 26.25%;  counter-reset: gauge-val 35; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:36%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 36%"])  { --gauge-percent: 27%;     counter-reset: gauge-val 36; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:37%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 37%"])  { --gauge-percent: 27.75%;  counter-reset: gauge-val 37; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:38%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 38%"])  { --gauge-percent: 28.5%;   counter-reset: gauge-val 38; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:39%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 39%"])  { --gauge-percent: 29.25%;  counter-reset: gauge-val 39; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:40%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 40%"])  { --gauge-percent: 30%;     counter-reset: gauge-val 40; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:41%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 41%"])  { --gauge-percent: 30.75%;  counter-reset: gauge-val 41; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:42%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 42%"])  { --gauge-percent: 31.5%;   counter-reset: gauge-val 42; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:43%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 43%"])  { --gauge-percent: 32.25%;  counter-reset: gauge-val 43; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:44%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 44%"])  { --gauge-percent: 33%;     counter-reset: gauge-val 44; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:45%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 45%"])  { --gauge-percent: 33.75%;  counter-reset: gauge-val 45; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:46%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 46%"])  { --gauge-percent: 34.5%;   counter-reset: gauge-val 46; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:47%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 47%"])  { --gauge-percent: 35.25%;  counter-reset: gauge-val 47; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:48%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 48%"])  { --gauge-percent: 36%;     counter-reset: gauge-val 48; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:49%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 49%"])  { --gauge-percent: 36.75%;  counter-reset: gauge-val 49; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:50%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 50%"])  { --gauge-percent: 37.5%;   counter-reset: gauge-val 50; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:51%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 51%"])  { --gauge-percent: 38.25%;  counter-reset: gauge-val 51; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:52%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 52%"])  { --gauge-percent: 39%;     counter-reset: gauge-val 52; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:53%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 53%"])  { --gauge-percent: 39.75%;  counter-reset: gauge-val 53; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:54%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 54%"])  { --gauge-percent: 40.5%;   counter-reset: gauge-val 54; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:55%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 55%"])  { --gauge-percent: 41.25%;  counter-reset: gauge-val 55; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:56%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 56%"])  { --gauge-percent: 42%;     counter-reset: gauge-val 56; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:57%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 57%"])  { --gauge-percent: 42.75%;  counter-reset: gauge-val 57; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:58%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 58%"])  { --gauge-percent: 43.5%;   counter-reset: gauge-val 58; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:59%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 59%"])  { --gauge-percent: 44.25%;  counter-reset: gauge-val 59; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:60%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 60%"])  { --gauge-percent: 45%;     counter-reset: gauge-val 60; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:61%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 61%"])  { --gauge-percent: 45.75%;  counter-reset: gauge-val 61; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:62%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 62%"])  { --gauge-percent: 46.5%;   counter-reset: gauge-val 62; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:63%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 63%"])  { --gauge-percent: 47.25%;  counter-reset: gauge-val 63; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:64%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 64%"])  { --gauge-percent: 48%;     counter-reset: gauge-val 64; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:65%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 65%"])  { --gauge-percent: 48.75%;  counter-reset: gauge-val 65; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:66%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 66%"])  { --gauge-percent: 49.5%;   counter-reset: gauge-val 66; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:67%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 67%"])  { --gauge-percent: 50.25%;  counter-reset: gauge-val 67; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:68%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 68%"])  { --gauge-percent: 51%;     counter-reset: gauge-val 68; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:69%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 69%"])  { --gauge-percent: 51.75%;  counter-reset: gauge-val 69; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:70%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 70%"])  { --gauge-percent: 52.5%;   counter-reset: gauge-val 70; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:71%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 71%"])  { --gauge-percent: 53.25%;  counter-reset: gauge-val 71; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:72%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 72%"])  { --gauge-percent: 54%;     counter-reset: gauge-val 72; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:73%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 73%"])  { --gauge-percent: 54.75%;  counter-reset: gauge-val 73; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:74%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 74%"])  { --gauge-percent: 55.5%;   counter-reset: gauge-val 74; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:75%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 75%"])  { --gauge-percent: 56.25%;  counter-reset: gauge-val 75; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:76%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 76%"])  { --gauge-percent: 57%;     counter-reset: gauge-val 76; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:77%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 77%"])  { --gauge-percent: 57.75%;  counter-reset: gauge-val 77; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:78%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 78%"])  { --gauge-percent: 58.5%;   counter-reset: gauge-val 78; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:79%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 79%"])  { --gauge-percent: 59.25%;  counter-reset: gauge-val 79; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:80%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 80%"])  { --gauge-percent: 60%;     counter-reset: gauge-val 80; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:81%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 81%"])  { --gauge-percent: 60.75%;  counter-reset: gauge-val 81; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:82%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 82%"])  { --gauge-percent: 61.5%;   counter-reset: gauge-val 82; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:83%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 83%"])  { --gauge-percent: 62.25%;  counter-reset: gauge-val 83; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:84%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 84%"])  { --gauge-percent: 63%;     counter-reset: gauge-val 84; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:85%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 85%"])  { --gauge-percent: 63.75%;  counter-reset: gauge-val 85; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:86%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 86%"])  { --gauge-percent: 64.5%;   counter-reset: gauge-val 86; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:87%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 87%"])  { --gauge-percent: 65.25%;  counter-reset: gauge-val 87; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:88%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 88%"])  { --gauge-percent: 66%;     counter-reset: gauge-val 88; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:89%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 89%"])  { --gauge-percent: 66.75%;  counter-reset: gauge-val 89; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:90%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 90%"])  { --gauge-percent: 67.5%;   counter-reset: gauge-val 90; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:91%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 91%"])  { --gauge-percent: 68.25%;  counter-reset: gauge-val 91; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:92%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 92%"])  { --gauge-percent: 69%;     counter-reset: gauge-val 92; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:93%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 93%"])  { --gauge-percent: 69.75%;  counter-reset: gauge-val 93; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:94%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 94%"])  { --gauge-percent: 70.5%;   counter-reset: gauge-val 94; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:95%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 95%"])  { --gauge-percent: 71.25%;  counter-reset: gauge-val 95; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:96%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 96%"])  { --gauge-percent: 72%;     counter-reset: gauge-val 96; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:97%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 97%"])  { --gauge-percent: 72.75%;  counter-reset: gauge-val 97; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:98%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 98%"])  { --gauge-percent: 73.5%;   counter-reset: gauge-val 98; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:99%"]),  .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 99%"])  { --gauge-percent: 74.25%;  counter-reset: gauge-val 99; }
+.col-md-12.mb10 .progress:has(.progress-bar.green[style*="width:100%"]), .col-md-12.mb10 .progress:has(.progress-bar.green[style*="width: 100%"]) { --gauge-percent: 75%;     counter-reset: gauge-val 100; }
 
-			position: absolute !important;
-			bottom: 0 !important;
-			left: 20px !important;
-			width: 200px !important;
-			height: 100px !important;
-			background: rgb(var(--bg-rgb)) !important;
-			border-radius: 100px 100px 0 0 !important;
-			z-index: 3 !important;
+/* ==========================================================================
+   4. THE CENTER CUTOUT MASK (Inner Sphere Generator)
+   ========================================================================== */
+.col-md-12.mb10 .progress::after {
+	/* Reads the wrapper counter value perfectly & appends the string text label */
+	content: counter(gauge-val) "% remaining" !important;
+	position: absolute !important;
+	top: 30px !important;   /* Pushed downward from top bounds uniformly */
+	left: 30px !important;  /* Center-balanced left offset */
+	width: 180px !important;
+	height: 180px !important; 
+	background: rgb(var(--bg-rgb)) !important;
+	border-radius: 50% !important; /* Continuous full circle boundary mask */
+	z-index: 3 !important;
 
-			/* Layout alignment to position the percentage text perfectly below the central hub */
-			display: flex !important;
-			justify-content: center !important;
-			align-items: flex-end !important;
-			padding-bottom: 5px !important;
+	/* Layout alignment to position the percentage text inside the bottom aperture */
+	display: flex !important;
+	justify-content: center !important;
+	align-items: flex-end !important;
+	padding-bottom: 64px !important; /* Slightly elevated to hover clearly inside the gap space */
 
-			font-family: 'Roboto', sans-serif !important;
-			font-size: 13px !important;
-			font-weight: 600 !important;
-			color: rgba(var(--text-rgb), 0.8) !important;
-			text-align: center !important;
-		}
+	font-family: 'Roboto', sans-serif !important;
+	font-size: 13px !important;
+	font-weight: 600 !important;
+	color: rgba(var(--text-rgb), 0.8) !important;
+	text-align: center !important;
+}
 
-		/* ==========================================================================
+/* ==========================================================================
    5. CENTRAL HUB READOUTS (GB STACKING ONLY)
    ========================================================================== */
-		.col-md-12.mb10 > p:first-of-type small:first-of-type {
-			position: absolute !important;
-			bottom: 30px !important;
-			left: 50% !important;
-			transform: translateX(-50%) !important;
-			z-index: 100 !important;
-			font-family: 'Roboto', sans-serif !important;
-			font-size: 28px !important;
-			font-weight: bold !important;
-			color: rgb(var(--primary-rgb)) !important;
-			background: rgb(var(--bg-rgb)) !important;
+.col-md-12.mb10 > p:first-of-type small:first-of-type {
+	position: absolute !important;
+	top: 100px !important; /* XX.XXGB text in the centre of the gauge postitioned just above the centre */
+	left: 50% !important;
+	transform: translateX(-50%) !important;
+	z-index: 100 !important;
+	font-family: 'Roboto', sans-serif !important;
+	font-size: 28px !important;
+	font-weight: bold !important;
+	color: rgb(var(--primary-rgb)) !important;
+	background: rgb(var(--bg-rgb)) !important;
 
-			display: inline-flex !important;
-			justify-content: center !important;
-			align-items: center !important;
-			overflow: hidden !important;
-			height: 36px !important;
-			width: max-content !important;
-		}
+	display: inline-flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+	overflow: hidden !important;
+	height: 36px !important;
+	width: max-content !important;
+}
 
-		.col-md-12.mb10 > p:first-of-type small:first-of-type::before {
-			content: "" !important;
-			margin-left: -0.4em !important;
-		}
-		.col-md-12.mb10 > p:first-of-type small:first-of-type::after {
-			content: "" !important;
-			margin-right: -0.4em !important;
-		}
+.col-md-12.mb10 > p:first-of-type small:first-of-type::before {
+	content: "" !important;
+	margin-left: -0.4em !important;
+}
+.col-md-12.mb10 > p:first-of-type small:first-of-type::after {
+	content: "" !important;
+	margin-right: -0.4em !important;
+}
 
-		/* Completely cleans up the hidden original raw HTML label */
-		.col-md-12.mb10 .progress-bar.green p {
-			display: none !important;
-		}
-		.col-md-12.mb10::after {
-			display: none !important;
-		}
+/* Completely cleans up the hidden original raw HTML label */
+.col-md-12.mb10 .progress-bar.green p {
+	display: none !important;
+}
+.col-md-12.mb10::after {
+	display: none !important;
+}
 
-	/* ==========================================================================
-	6. MIN/MAX GAUGES (0GB & MAXIMUM CORNER LABELS)
-	========================================================================== */
-		.col-md-12.mb10::before {
-			content: "0GB" !important;
-			position: absolute !important;
-			bottom: 0px !important;
-			left: calc(50% - 145px) !important;
-			z-index: 15 !important;
+/* ==========================================================================
+   6. MIN/MAX GAUGES (0GB & MAXIMUM CORNER LABELS)
+   ========================================================================== */
+.col-md-12.mb10::before {
+	content: "0GB" !important;
+	position: absolute !important;
+	bottom: 16px !important; /* Shifted out to flank the bottom left terminal end of the 270° arc */
+	left: calc(50% - 95px) !important;
+	z-index: 15 !important;
 
-			font-family: 'Roboto', sans-serif !important;
-			font-size: 11px !important;
-			font-weight: bold !important;
-			color: rgba(var(--text-rgb), 0.8) !important;
-		}
+	font-family: 'Roboto', sans-serif !important;
+	font-size: 11px !important;
+	font-weight: bold !important;
+	color: rgba(var(--text-rgb), 0.8) !important;
+}
 
-		.col-md-12.mb10 > p:first-of-type small:last-of-type {
-			position: absolute !important;
-			bottom: 0px !important;
-			left: calc(50% + 125px) !important;
-			z-index: 15 !important;
+.col-md-12.mb10 > p:first-of-type small:last-of-type {
+	position: absolute !important;
+	bottom: 16px !important; /* Shifted out to flank the bottom right terminal end of the 270° arc */
+	left: calc(50% + 65px) !important;
+	z-index: 15 !important;
 
-			font-family: 'Roboto', sans-serif !important;
-			font-size: 11px !important;
-			font-weight: bold !important;
-			color: rgba(var(--text-rgb), 0.8) !important;
+	font-family: 'Roboto', sans-serif !important;
+	font-size: 11px !important;
+	font-weight: bold !important;
+	color: rgba(var(--text-rgb), 0.8) !important;
 
-			display: inline-flex !important;
-			justify-content: center !important;
-			align-items: center !important;
-			overflow: hidden !important;
-			height: 16px !important;
-			width: max-content !important;
-		}
+	display: inline-flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+	overflow: hidden !important;
+	height: 16px !important;
+	width: max-content !important;
+}
 
-		.col-md-12.mb10 > p:first-of-type small:last-of-type::before {
-			content: "" !important;
-			margin-left: -0.35em !important;
-		}
-		.col-md-12.mb10 > p:first-of-type small:last-of-type::after {
-			content: "" !important;
-			margin-right: -0.35em !important;
-		}
+.col-md-12.mb10 > p:first-of-type small:last-of-type::before {
+	content: "" !important;
+	margin-left: -0.35em !important;
+}
+.col-md-12.mb10 > p:first-of-type small:last-of-type::after {
+	content: "" !important;
+	margin-right: -0.35em !important;
+}
 
-		/* ==========================================================================
+/* ==========================================================================
    7. FOOTER DISCLAIMER INFO
    ========================================================================== */
-		.col-md-12.mb10 > p:last-of-type {
-			display: none;
-		}
+.col-md-12.mb10 > p:last-of-type {
+	display: none;
+}
 	}
 }
 
